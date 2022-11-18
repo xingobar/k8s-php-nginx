@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+  namespace: lnmp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  # 也可以自己創建 pv
+  # volumeName: pv
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    lnmp: mysql
+  namespace: lnmp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql
+          ports:
+            - containerPort: 3306
+              name: mysql-port
+#          volumeMounts:
+#            - name: pvc
+#              mountPath: /var/lib/mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key:  password
+      volumes:
+        - name: pvc
+          persistentVolumeClaim:
+            claimName: pvc

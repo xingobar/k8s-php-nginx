@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: lnmp
+  labels:
+    lnmp: nginx
+spec:
+  containers:
+    - name: lnmp-nginx
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+          name: nginx-port
+      volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
+        - name: php-config-file
+          mountPath: /app
+        - name: pvc
+          mountPath: /tmp
+  volumes:
+    - name: nginx-conf
+      configMap:
+        name: nginx-conf
+        items:
+          - key: config
+            path: my-nginx.conf
+#    - name: php-index
+#      configMap:
+#        name: php-index
+#        items:
+#          - key: index.php
+#            path: index.php
+    - name: php-config-file
+      configMap:
+        name: php-file
+        items:
+          - key: db
+            path: db.php
+          - key: index
+            path: index.php
+    - name: pvc
+      persistentVolumeClaim:
+        claimName: pvc

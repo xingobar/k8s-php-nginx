@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-service
+  namespace: lnmp
+spec:
+  type: NodePort
+  selector:
+    lnmp: php
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: php-port
+      name: php-service-port
